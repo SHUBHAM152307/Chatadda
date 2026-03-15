@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chatadda</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     AUTH SCREEN
+════════════════════════════════ -->
+<div id="authScreen" class="screen active">
+  <div class="auth-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">💬</div>
+      <span class="auth-logo-name">Chatadda</span>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginView">
+      <div class="auth-title">Welcome back 👋</div>
+      <p class="auth-sub">New here? <a onclick="showView('signupView')">Create an account</a></p>
+      <div class="social-row">
+        <button class="social-btn" onclick="socialAuth('Google')">
+          <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google
+        </button>
+        <button class="social-btn" onclick="socialAuth('GitHub')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.09.682-.218.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          GitHub
+        </button>
+      </div>
+      <div class="divider">or with email</div>
+      <div class="error-box" id="loginErr"></div>
+      <div class="field">
+        <label>Email</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" id="loginEmail" placeholder="you@email.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="field-wrap">
+          <span class="field-icon">🔑</span>
+          <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password">
+          <button class="eye-toggle" onclick="toggleEye('loginPass',this)">👁️</button>
+        </div>
+      </div>
+      <div class="form-options">
+        <label class="checkbox-label"><input type="checkbox"> Remember me</label>
+        <span class="forgot-link" onclick="forgotPassword()">Forgot password?</span>
+      </div>
+      <button class="btn-primary" id="loginBtn" onclick="handleLogin()">Sign In →</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signupView" class="hidden">
+      <div class="auth-title">Create account 🚀</div>
+      <p class="auth-sub">Already have one? <a onclick="showView('loginView')">Sign in</a></p>
+      <div class="error-box" id="signupErr"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>First Name</label>
+          <div class="field-wrap">
+            <span class="field-icon">👤</span>
+            <input type="text" id="signupFirst" placeholder="Ravi" style="padding-left:38px">
+          </div>
+        </div>
+        <div class="field">
+          <label>Last Name</label>
+          <div class="field-wrap">
+            <input type="text" id="signupLast" placeholder="Patel" style="padding-left:14px">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" id="signupEmail" placeholder="you@email.com">
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="field-wrap">
+          <span class="field-icon">🔑</span>
+          <input type="password" id="signupPass" placeholder="Min 6 characters">
+          <button class="eye-toggle" onclick="toggleEye('signupPass',this)">👁️</button>
+        </div>
+      </div>
+      <button class="btn-primary" id="signupBtn" onclick="handleSignup()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     APP SCREEN
+════════════════════════════════ -->
+<div id="appScreen" class="screen">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-header">
+      <div class="sb-top">
+        <div class="brand">
+          <div class="brand-icon">💬</div>
+          <span class="brand-name">Chatadda</span>
+        </div>
+        <div class="sb-actions">
+          <button class="icon-btn" title="New Chat" onclick="newChatPrompt()">✏️</button>
+          <button class="icon-btn" title="Notifications">🔔</button>
+        </div>
+      </div>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search chats..." oninput="filterRooms(this.value)">
+      </div>
+    </div>
+
+    <div class="sb-tabs">
+      <div class="sb-tab active" onclick="setTab(this)">All</div>
+      <div class="sb-tab" onclick="setTab(this)">DMs</div>
+      <div class="sb-tab" onclick="setTab(this)">Groups</div>
+      <div class="sb-tab" onclick="setTab(this)">Archived</div>
+    </div>
+
+    <div class="rooms-list" id="roomsList">
+      <div class="section-label">Pinned 📌</div>
+
+      <div class="room-item active" data-room="aria" onclick="openRoom(this,'Aria Sharma','👩','online','Designer at Figma • Mumbai')">
+        <div class="av" style="background:linear-gradient(135deg,#0d2b5e,#0ea5e9)">👩<div class="av-dot online"></div></div>
+        <div class="room-info"><div class="room-name">Aria Sharma</div><div class="room-prev">Hey! Free tonight? 🎉</div></div>
+        <div class="room-meta"><span class="room-time">2m</span><span class="badge">3</span></div>
+      </div>
+
+      <div class="room-item" data-room="devteam" onclick="openRoom(this,'Dev Team 🚀','🚀','group','8 members • 5 online')">
+        <div class="av" style="background:linear-gradient(135deg,#082040,#0369a1)">🚀</div>
+        <div class="room-info"><div class="room-name">Dev Team 🚀</div><div class="room-prev">Marco: PR is ready for review</div></div>
+        <div class="room-meta"><span class="room-time">14m</span><span class="badge">5</span></div>
+      </div>
+
+      <div class="section-label">Recent</div>
+
+      <div class="room-item" data-room="lucas" onclick="openRoom(this,'Lucas White','👦','away','Product Manager • Bengaluru')">
+        <div class="av" style="background:linear-gradient(135deg,#0a1f42,#0284c7)">👦<div class="av-dot away"></div></div>
+        <div class="room-info"><div class="room-name">Lucas White</div><div class="room-prev">Sounds good, let's do it! 👌</div></div>
+        <div class="room-meta"><span class="room-time">1h</span></div>
+      </div>
+
+      <div class="room-item" data-room="design" onclick="openRoom(this,'Design Squad 🎨','🎨','group','12 members • 3 online')">
+        <div class="av" style="background:linear-gradient(135deg,#0c2461,#1e90ff)">🎨</div>
+        <div class="room-info"><div class="room-name">Design Squad 🎨</div><div class="room-prev">New brand kit uploaded!</div></div>
+        <div class="room-meta"><span class="room-time">3h</span></div>
+      </div>
+
+      <div class="room-item" data-room="mia" onclick="openRoom(this,'Mia Chen','👧','online','Startup Founder • Delhi')">
+        <div class="av" style="background:linear-gradient(135deg,#082040,#0ea5e9)">👧<div class="av-dot online"></div></div>
+        <div class="room-info"><div class="room-name">Mia Chen</div><div class="room-prev">Thanks so much! 💙</div></div>
+        <div class="room-meta"><span class="room-time">Yesterday</span></div>
+      </div>
+
+      <div class="room-item" data-room="noah" onclick="openRoom(this,'Noah Park','🧑','offline','Engineer • Pune')">
+        <div class="av" style="background:linear-gradient(135deg,#1a2a40,#2c4a6e)">🧑<div class="av-dot"></div></div>
+        <div class="room-info"><div class="room-name">Noah Park</div><div class="room-prev">I'll get back to you!</div></div>
+        <div class="room-meta"><span class="room-time">Mon</span></div>
+      </div>
+
+      <div class="room-item" data-room="priya" onclick="openRoom(this,'Priya Patel','👩‍💻','online','Full Stack Dev • Ahmedabad')">
+        <div class="av" style="background:linear-gradient(135deg,#0d2b5e,#38bdf8)">👩‍💻<div class="av-dot online"></div></div>
+        <div class="room-info"><div class="room-name">Priya Patel</div><div class="room-prev">Did you check the new update?</div></div>
+        <div class="room-meta"><span class="room-time">Sun</span></div>
+      </div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="user-card" onclick="openMyProfile()">
+        <div class="user-av" id="sbUserAv">😊</div>
+        <div class="user-info">
+          <div class="user-name" id="sbUserName">You</div>
+          <div class="user-status">● Active now</div>
+        </div>
+        <button class="user-logout" title="Sign out" onclick="event.stopPropagation();logout()">⏻</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT AREA -->
+  <div class="chat-main">
+    <div class="no-chat" id="noChat">
+      <div class="no-chat-icon">💬</div>
+      <h3>Welcome to Chatadda</h3>
+      <p>Select a conversation from the sidebar or start a new chat.</p>
+    </div>
+
+    <div id="chatView" class="hidden" style="display:flex;flex-direction:column;height:100%;overflow:hidden;">
+      <!-- Header -->
+      <div class="chat-header">
+        <button class="menu-btn" onclick="openSidebar()">☰</button>
+        <div class="av" id="chatAv" style="background:linear-gradient(135deg,#0d2b5e,#0ea5e9);cursor:pointer" onclick="openContactProfile()">👩</div>
+        <div class="ch-info">
+          <div class="ch-name" id="chatName" onclick="openContactProfile()">Aria Sharma</div>
+          <div class="ch-sub" id="chatSub">● Online now</div>
+        </div>
+        <div class="ch-actions">
+          <button class="icon-btn" onclick="startCall('voice')">📞</button>
+          <button class="icon-btn" onclick="startCall('video')">📹</button>
+          <button class="icon-btn">🔍</button>
+          <button class="icon-btn">⋮</button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages" id="messages">
+        <div class="date-chip">Today</div>
+      </div>
+
+      <!-- Typing -->
+      <div class="typing-bar" id="typingBar" style="visibility:hidden">
+        <div class="typing-dots"><span></span><span></span><span></span></div>
+        <span id="typingText">Aria is typing...</span>
+      </div>
+
+      <!-- Emoji Picker -->
+      <div class="emoji-picker" id="emojiPicker">
+        <button class="ep-btn" onclick="insertEmoji('😊')">😊</button><button class="ep-btn" onclick="insertEmoji('😂')">😂</button>
+        <button class="ep-btn" onclick="insertEmoji('❤️')">❤️</button><button class="ep-btn" onclick="insertEmoji('🔥')">🔥</button>
+        <button class="ep-btn" onclick="insertEmoji('👍')">👍</button><button class="ep-btn" onclick="insertEmoji('🎉')">🎉</button>
+        <button class="ep-btn" onclick="insertEmoji('😎')">😎</button><button class="ep-btn" onclick="insertEmoji('🚀')">🚀</button>
+        <button class="ep-btn" onclick="insertEmoji('💙')">💙</button><button class="ep-btn" onclick="insertEmoji('🙏')">🙏</button>
+        <button class="ep-btn" onclick="insertEmoji('✨')">✨</button><button class="ep-btn" onclick="insertEmoji('💪')">💪</button>
+        <button class="ep-btn" onclick="insertEmoji('😍')">😍</button><button class="ep-btn" onclick="insertEmoji('🤔')">🤔</button>
+        <button class="ep-btn" onclick="insertEmoji('👀')">👀</button><button class="ep-btn" onclick="insertEmoji('😅')">😅</button>
+        <button class="ep-btn" onclick="insertEmoji('🥳')">🥳</button><button class="ep-btn" onclick="insertEmoji('💡')">💡</button>
+        <button class="ep-btn" onclick="insertEmoji('📌')">📌</button><button class="ep-btn" onclick="insertEmoji('🎯')">🎯</button>
+        <button class="ep-btn" onclick="insertEmoji('⚡')">⚡</button><button class="ep-btn" onclick="insertEmoji('🌊')">🌊</button>
+        <button class="ep-btn" onclick="insertEmoji('🍕')">🍕</button><button class="ep-btn" onclick="insertEmoji('☕')">☕</button>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="reply-strip" id="replyStrip">
+          <div class="reply-strip-text">Replying to <strong id="replyToName"></strong>: <span id="replyPreview"></span></div>
+          <button class="cancel-reply" onclick="clearReply()">✕</button>
+        </div>
+        <div class="input-box">
+          <button class="input-action" onclick="document.getElementById('fileIn').click()">📎</button>
+          <input type="file" id="fileIn" style="display:none" onchange="handleFile(this)">
+          <button class="input-action" onclick="toggleEmoji()">😊</button>
+          <textarea id="msgInput" placeholder="Message Aria..." rows="1" oninput="autoResize(this)" onkeydown="onKey(event)"></textarea>
+          <button class="send-btn" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     IMAGE LIGHTBOX
+════════════════════════════════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-bar" onclick="event.stopPropagation()">
+    <span class="lightbox-title" id="lbTitle">Image</span>
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  </div>
+  <img class="lightbox-img" id="lbImg" src="" alt="" onclick="event.stopPropagation()">
+  <div class="lightbox-footer" onclick="event.stopPropagation()">
+    <button class="lb-action" onclick="downloadLbImg()">⬇️ Save</button>
+    <button class="lb-action" onclick="closeLightbox()">✕ Close</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CONTEXT MENU
+════════════════════════════════ -->
+<div class="ctx-menu" id="ctxMenu" style="display:none">
+  <div class="ctx-item" onclick="ctxCopy()">📋 Copy Text</div>
+  <div class="ctx-item" onclick="ctxReply()">↩️ Reply</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" onclick="ctxDeleteMe()">🗑️ Delete for Me</div>
+  <div class="ctx-item danger" id="ctxDelAll" onclick="ctxDeleteAll()">🚫 Delete for Everyone</div>
+</div>
+
+<!-- ════════════════════════════════
+     CALL OVERLAY
+════════════════════════════════ -->
+<div class="call-overlay" id="callOverlay">
+  <div class="call-av" id="callAv" style="background:linear-gradient(135deg,#0d2b5e,#0ea5e9)">👩</div>
+  <div class="call-name" id="callName">Aria Sharma</div>
+  <div class="call-status" id="callStatus">Calling...</div>
+  <div class="call-btns">
+    <button class="call-btn mic" onclick="toggleMic(this)">🎙️</button>
+    <button class="call-btn end" onclick="endCall()">📵</button>
+    <button class="call-btn spk" onclick="toggleSpk(this)">🔊</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CONTACT PROFILE PANEL
+════════════════════════════════ -->
+<div class="profile-backdrop" id="profileBackdrop" onclick="closeContactProfile()"></div>
+<div class="profile-panel" id="profilePanel">
+  <div class="pp-close-bar">
+    <button class="pp-back-btn" onclick="closeContactProfile()">←</button>
+    <span class="pp-close-title">Contact Info</span>
+  </div>
+  <div class="pp-hero">
+    <div class="pp-avatar-ring">
+      <div class="pp-avatar" id="ppAvatar">👩</div>
+      <div class="pp-status-dot online" id="ppStatusDot"></div>
+    </div>
+    <div class="pp-name" id="ppName">Aria Sharma</div>
+    <div class="pp-handle" id="ppHandle">@aria.sharma</div>
+    <div class="pp-status-text" id="ppStatusText">● Online now</div>
+  </div>
+  <div class="pp-actions">
+    <button class="pp-action-btn" onclick="startCall('voice');closeContactProfile()"><span>📞</span><span>Call</span></button>
+    <button class="pp-action-btn" onclick="startCall('video');closeContactProfile()"><span>📹</span><span>Video</span></button>
+    <button class="pp-action-btn"><span>🔇</span><span>Mute</span></button>
+    <button class="pp-action-btn"><span>🔍</span><span>Search</span></button>
+  </div>
+  <div class="pp-section">
+    <div class="pp-section-title">About</div>
+    <div class="pp-info-row"><span class="pp-info-icon">💼</span><div><div class="pp-info-label">Work</div><div class="pp-info-value" id="ppWork">Designer at Figma</div></div></div>
+    <div class="pp-info-row"><span class="pp-info-icon">📍</span><div><div class="pp-info-label">Location</div><div class="pp-info-value" id="ppLocation">Mumbai, India</div></div></div>
+    <div class="pp-info-row"><span class="pp-info-icon">📝</span><div><div class="pp-info-label">Bio</div><div class="pp-info-value" id="ppBio">Design is how it works ✨</div></div></div>
+    <div class="pp-info-row"><span class="pp-info-icon">📅</span><div><div class="pp-info-label">Member since</div><div class="pp-info-value" id="ppJoined">January 2024</div></div></div>
+  </div>
+  <div class="pp-section">
+    <div class="pp-section-title">Shared Media</div>
+    <div class="pp-media-grid">
+      <div class="pp-media-item">🖼️</div><div class="pp-media-item">📸</div><div class="pp-media-item">🎥</div>
+      <div class="pp-media-item">📄</div><div class="pp-media-item">🎵</div><div class="pp-media-item" style="font-size:13px;color:var(--sky-400);font-weight:700">+12</div>
+    </div>
+  </div>
+  <div class="pp-danger">
+    <button class="pp-danger-btn">🔕 Mute Notifications</button>
+    <button class="pp-danger-btn">🚫 Block Contact</button>
+    <button class="pp-danger-btn">🗑️ Clear Chat</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MY PROFILE PANEL
+════════════════════════════════ -->
+<div class="profile-backdrop" id="myProfileBackdrop" onclick="closeMyProfile()"></div>
+<div class="profile-panel" id="myProfilePanel">
+  <div class="pp-close-bar">
+    <button class="pp-back-btn" onclick="closeMyProfile()">←</button>
+    <span class="pp-close-title">My Profile</span>
+  </div>
+  <div class="pp-hero">
+    <div class="pp-avatar-ring">
+      <div class="pp-avatar" id="myPpAvatar">😊</div>
+      <div class="pp-status-dot online"></div>
+    </div>
+    <div class="pp-name" id="myPpName">You</div>
+    <div class="pp-handle" id="myPpHandle">@you</div>
+    <div class="pp-status-text">● Active now</div>
+    <button class="pp-edit-btn" onclick="showToast('✏️','Edit Profile','Coming soon!')">✏️ Edit Profile</button>
+  </div>
+  <div class="pp-section">
+    <div class="pp-section-title">My Info</div>
+    <div class="pp-info-row"><span class="pp-info-icon">✉️</span><div><div class="pp-info-label">Email</div><div class="pp-info-value" id="myPpEmail">you@email.com</div></div></div>
+    <div class="pp-info-row"><span class="pp-info-icon">📝</span><div><div class="pp-info-label">Status</div><div class="pp-info-value">Hey there! I'm using Chatadda 💬</div></div></div>
+    <div class="pp-info-row"><span class="pp-info-icon">📅</span><div><div class="pp-info-label">Joined</div><div class="pp-info-value">March 2026</div></div></div>
+  </div>
+  <div class="pp-section">
+    <div class="pp-section-title">Settings</div>
+    <div class="pp-info-row" style="cursor:pointer" onclick="showToast('🔔','Notifications','Coming soon!')">
+      <span class="pp-info-icon">🔔</span><div><div class="pp-info-value">Notifications</div><div class="pp-info-label">Manage alerts</div></div>
+    </div>
+    <div class="pp-info-row" style="cursor:pointer" onclick="showToast('🔒','Privacy','Coming soon!')">
+      <span class="pp-info-icon">🔒</span><div><div class="pp-info-value">Privacy & Security</div><div class="pp-info-label">Control who sees your info</div></div>
+    </div>
+    <div class="pp-info-row" style="cursor:pointer" onclick="showToast('🎨','Theme','Coming soon!')">
+      <span class="pp-info-icon">🎨</span><div><div class="pp-info-value">Theme</div><div class="pp-info-label">Navy Blue (Default)</div></div>
+    </div>
+  </div>
+  <div class="pp-danger">
+    <button class="pp-danger-btn" onclick="closeMyProfile();logout()">⏻ Sign Out</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
